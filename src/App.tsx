@@ -48,7 +48,7 @@ export const App: React.FC = () => {
   // const [user, setUser] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const filteredList = prodsAndCatsAndUsers
-    .filter(prod => prod.category?.user?.name === user);
+    .filter(prod => prod.category?.user?.name === ' ');
 
   return (
     <div className="section">
