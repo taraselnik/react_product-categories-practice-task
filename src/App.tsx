@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 
+import classNames from 'classnames';
 import usersFromServer from './api/users';
 import productsFromServer from './api/products';
 import categoriesFromServer from './api/categories';
-import classNames from 'classnames';
 
 // type Product = {
 //   id: number,
@@ -44,6 +44,12 @@ const prodsAndCatsAndUsers = productsFromServer.map((prod) => ({
 }));
 
 export const App: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [user, setUser] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const filteredList = prodsAndCatsAndUsers
+    .filter(prod => prod.category?.user?.name === user);
+
   return (
     <div className="section">
       <div className="container">
@@ -60,28 +66,15 @@ export const App: React.FC = () => {
               >
                 All
               </a>
+              {usersFromServer.map(user1 => (
+                <a
+                  data-cy="FilterUser"
+                  href="#/"
+                >
+                  {user1.name}
+                </a>
+              ))}
 
-              <a
-                data-cy="FilterUser"
-                href="#/"
-              >
-                User 1
-              </a>
-
-              <a
-                data-cy="FilterUser"
-                href="#/"
-                className="is-active"
-              >
-                User 2
-              </a>
-
-              <a
-                data-cy="FilterUser"
-                href="#/"
-              >
-                User 3
-              </a>
             </p>
 
             <div className="panel-block">
