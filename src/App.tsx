@@ -4,6 +4,7 @@ import './App.scss';
 import usersFromServer from './api/users';
 import productsFromServer from './api/products';
 import categoriesFromServer from './api/categories';
+import classNames from 'classnames';
 
 // type Product = {
 //   id: number,
@@ -240,7 +241,12 @@ export const App: React.FC = () => {
 
                   <td
                     data-cy="ProductUser"
-                    className="has-text-link"
+                    className={classNames(
+                      {
+                        'has-text-link': product.category?.user?.sex === 'm',
+                        'has-text-danger': product.category?.user?.sex === 'f',
+                      },
+                    )}
                   >
                     {product.category?.user?.name}
                   </td>
