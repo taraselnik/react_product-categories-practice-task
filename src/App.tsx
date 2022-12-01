@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.scss';
 
 import classNames from 'classnames';
@@ -45,7 +45,7 @@ const prodsAndCatsAndUsers = productsFromServer.map((prod) => ({
 
 export const App: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [user, setUser] = useState('');
+  // const [user, setUser] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const filteredList = prodsAndCatsAndUsers
     .filter(prod => prod.category?.user?.name === user);
