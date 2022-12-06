@@ -62,11 +62,33 @@ export const App: React.FC = () => {
       .includes(normInputState));
   }
 
-  const [activeCategory, setActiveCategory] = useState<number | boolean>(false);
+  const [activeCategory, setActiveCategory] = useState<boolean[]>(
+    new Array(categoriesFromServer.length).fill(false),
+  );
 
-  if (activeCategory) {
-    products = products
-      .filter(product => product.category?.id === activeCategory);
+  let hashCategories = new Array(categoriesFromServer.length).fill('');
+
+  const handleActiveCategory
+  :(indexCat: boolean | number) => void = (indexCat) => {
+    if (indexCat === false) {
+      const resetCategories = activeCategory.fill(false);
+
+      setActiveCategory(resetCategories);
+    }
+
+    const updateActiveCategories = activeCategory.map((item, index) => (
+      index === indexCat ? !item : item));
+
+    setActiveCategory(updateActiveCategories);
+  };
+
+  hashCategories = hashCategories.map((item, index) => (
+    activeCategory[index] === true
+      ? categoriesFromServer[index].title : item));
+
+  if (activeCategory.includes(true)) {
+    products = products.filter(item => (
+      hashCategories.includes(item.category?.title)));
   }
 
   const [sort, setSort] = useState(0);
@@ -192,22 +214,22 @@ export const App: React.FC = () => {
                 href="#/"
                 data-cy="AllCategories"
                 className={classNames('button is-success mr-6',
-                  { 'is-outlined': activeCategory !== false })}
-                onClick={() => setActiveCategory(false)}
+                  { 'is-outlined': activeCategory.includes(true) })}
+                onClick={() => handleActiveCategory(false)}
               >
                 All
               </a>
 
-              {categoriesFromServer.map(cat => (
+              {categoriesFromServer.map((cat, index) => (
                 <a
                   key={cat.id}
                   data-cy="Category"
                   className={classNames(
                     'button mr-2 my-1',
-                    { 'is-info': activeCategory === cat.id },
+                    { 'is-info': activeCategory[index] === true },
                   )}
                   href="#/"
-                  onClick={() => setActiveCategory(cat.id)}
+                  onClick={() => handleActiveCategory(index)}
                 >
                   {`Category ${cat.id}`}
                 </a>
