@@ -18,3 +18,10 @@ export type Product = {
   user: User | null;
   category: Category | null;
 };
+
+export type ProductTable = [
+  ID: string,
+  Product: string,
+  Category: string,
+  User: string,
+];

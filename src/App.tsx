@@ -5,7 +5,9 @@ import classNames from 'classnames';
 import usersFromServer from './api/users';
 import productsFromServer from './api/products';
 import categoriesFromServer from './api/categories';
-import { Category, Product, User } from './types/Product';
+import {
+  Category, Product, ProductTable, User,
+} from './types/Product';
 
 const getCategoryById = (id: number | null) => {
   return categoriesFromServer.find(category => category.id === id) || null;
@@ -36,6 +38,13 @@ const getFullProducts: Product[] = productsFromServer.map(product => {
   );
 });
 
+const productTable: ProductTable = [
+  'ID',
+  'Product',
+  'Category',
+  'User',
+];
+
 export const App: React.FC = () => {
   let products = [...getFullProducts];
   const [activeId, setActiveId] = useState<number | boolean>(false);
@@ -60,16 +69,63 @@ export const App: React.FC = () => {
       .filter(product => product.category?.id === activeCategory);
   }
 
-  //! const [sort, setSort] = useState(0);
+  const [sort, setSort] = useState(0);
+  const [colTable, setColTable] = useState('ID');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //! const handleSortClick: () => void = () => {
-  //   if (sort === 2) {
-  //     setSort(0);
-  //   } else {
-  //     setSort((prev) => prev + 1);
-  //   }
-  // };
+  const handleSortClick: (name: string) => void = (name) => {
+    if (colTable !== name) {
+      setColTable(name);
+      setSort(0);
+    }
+
+    if (sort === 2) {
+      setSort(0);
+    } else {
+      setSort((prev) => prev + 1);
+    }
+  };
+
+  if (colTable === 'ID' && sort === 2) {
+    products = products.sort((a, b) => b.id - a.id);
+  }
+
+  if (colTable === 'Product') {
+    if (sort === 1) {
+      products = products.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    if (sort === 2) {
+      products = products.sort((a, b) => b.name.localeCompare(a.name));
+    }
+  }
+
+  if (colTable === 'Category') {
+    if (sort === 1) {
+      products = products.sort(
+        (a, b) => a.category.title.localeCompare(b.category.title),
+      );
+    }
+
+    if (sort === 2) {
+      products = products.sort(
+        (a, b) => b.category?.title.localeCompare(a.category?.title),
+      );
+    }
+  }
+
+  if (colTable === 'User') {
+    if (sort === 1) {
+      products = products.sort(
+        (a, b) => a.user?.name.localeCompare(b.user?.name),
+      );
+    }
+
+    if (sort === 2) {
+      products = products.sort(
+        (a, b) => b.user?.name.localeCompare(a.user?.name),
+      );
+    }
+  }
 
   return (
     <div className="section">
@@ -191,58 +247,31 @@ export const App: React.FC = () => {
           >
             <thead>
               <tr>
-                <th>
-                  <span className="is-flex is-flex-wrap-nowrap">
-                    ID
-                    {/* <div>{sort}</div> */}
+                {productTable.map((element) => (
+                  <th key={element}>
+                    <span className="is-flex is-flex-wrap-nowrap">
+                      {element}
 
-                    <a href="#/">
-                      <span className="icon">
-                        <i
-                          data-cy="SortIcon"
-                          className="fas fa-sort"
-                          //! onClick={() => handleSortClick()}
-                        />
-                      </span>
-                    </a>
-                  </span>
-                </th>
+                      <a
+                        href="#/"
+                        onClick={() => handleSortClick(element)}
+                      >
+                        <span className="icon">
+                          <i
+                            data-cy="SortIcon"
+                            className={classNames(
+                              'fas',
+                              { 'fa-sort': sort === 0 },
+                              { 'fa-sort-up': sort === 1 },
+                              { 'fa-sort-down': sort === 2 },
+                            )}
+                          />
+                        </span>
+                      </a>
+                    </span>
+                  </th>
+                ))}
 
-                <th>
-                  <span className="is-flex is-flex-wrap-nowrap">
-                    Product
-
-                    <a href="#/">
-                      <span className="icon">
-                        <i data-cy="SortIcon" className="fas fa-sort-down" />
-                      </span>
-                    </a>
-                  </span>
-                </th>
-
-                <th>
-                  <span className="is-flex is-flex-wrap-nowrap">
-                    Category
-
-                    <a href="#/">
-                      <span className="icon">
-                        <i data-cy="SortIcon" className="fas fa-sort-up" />
-                      </span>
-                    </a>
-                  </span>
-                </th>
-
-                <th>
-                  <span className="is-flex is-flex-wrap-nowrap">
-                    User
-
-                    <a href="#/">
-                      <span className="icon">
-                        <i data-cy="SortIcon" className="fas fa-sort" />
-                      </span>
-                    </a>
-                  </span>
-                </th>
               </tr>
             </thead>
 
