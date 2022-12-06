@@ -245,7 +245,7 @@ export const App: React.FC = () => {
                 onClick={() => {
                   setActiveId(false);
                   setInputState('');
-                  setActiveCategory(false);
+                  handleActiveCategory(false);
                 }}
 
               >
