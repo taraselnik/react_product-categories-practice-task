@@ -102,7 +102,7 @@ export const App: React.FC = () => {
   if (colTable === 'Category') {
     if (sort === 1) {
       products = products.sort(
-        (a, b) => a.category.title.localeCompare(b.category.title),
+        (a, b) => a.category?.title.localeCompare(b.category?.title),
       );
     }
 
