@@ -102,28 +102,27 @@ export const App: React.FC = () => {
   if (colTable === 'Category') {
     if (sort === 1) {
       products = products.sort(
-        (a, b) => a.category?.title.localeCompare(b.category?.title),
+        (a, b): number => (
+          a.category?.title.localeCompare(b.category?.title || '') || 0),
       );
     }
 
     if (sort === 2) {
-      products = products.sort(
-        (a, b) => b.category?.title.localeCompare(a.category?.title),
-      );
+      products = products.sort((
+        (a, b) => b.category?.title
+          .localeCompare(a.category?.title || '') || 0));
     }
   }
 
   if (colTable === 'User') {
     if (sort === 1) {
-      products = products.sort(
-        (a, b) => a.user?.name.localeCompare(b.user?.name),
-      );
+      products = products.sort((
+        (a, b) => a.user?.name.localeCompare(b.user?.name || '') || 0));
     }
 
     if (sort === 2) {
-      products = products.sort(
-        (a, b) => b.user?.name.localeCompare(a.user?.name),
-      );
+      products = products.sort((
+        (a, b) => b.user?.name.localeCompare(a.user?.name || '') || 0));
     }
   }
 
@@ -261,9 +260,15 @@ export const App: React.FC = () => {
                             data-cy="SortIcon"
                             className={classNames(
                               'fas',
-                              { 'fa-sort': sort === 0 },
-                              { 'fa-sort-up': sort === 1 },
-                              { 'fa-sort-down': sort === 2 },
+                              { 'fa-sort': sort === 0 || element !== colTable },
+                              {
+                                'fa-sort-up': sort === 1
+                                && element === colTable,
+                              },
+                              {
+                                'fa-sort-down': sort === 2
+                                && element === colTable,
+                              },
                             )}
                           />
                         </span>
