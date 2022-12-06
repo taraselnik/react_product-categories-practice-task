@@ -60,15 +60,16 @@ export const App: React.FC = () => {
       .filter(product => product.category?.id === activeCategory);
   }
 
-  const [sort, setSort] = useState(0);
+  //! const [sort, setSort] = useState(0);
 
-  const handleSortClick: () => void = () => {
-    if (sort === 2) {
-      setSort(0);
-    } else {
-      setSort((prev) => prev + 1);
-    }
-  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //! const handleSortClick: () => void = () => {
+  //   if (sort === 2) {
+  //     setSort(0);
+  //   } else {
+  //     setSort((prev) => prev + 1);
+  //   }
+  // };
 
   return (
     <div className="section">
@@ -136,8 +137,7 @@ export const App: React.FC = () => {
                 href="#/"
                 data-cy="AllCategories"
                 className={classNames('button is-success mr-6',
-                  { 'is-outlined': activeCategory !== false },
-                )}
+                  { 'is-outlined': activeCategory !== false })}
                 onClick={() => setActiveCategory(false)}
               >
                 All
@@ -194,7 +194,7 @@ export const App: React.FC = () => {
                 <th>
                   <span className="is-flex is-flex-wrap-nowrap">
                     ID
-                    <div>{sort}</div>
+                    {/* <div>{sort}</div> */}
 
                     <a href="#/">
                       <span className="icon">
